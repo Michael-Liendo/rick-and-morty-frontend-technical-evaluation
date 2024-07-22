@@ -72,7 +72,7 @@ export default function Home() {
                     prev === specie ? undefined : specie,
                   )
                 }
-                className={`${filterSpecie === specie && '!bg-blue-500'}`}
+                className={`${filterSpecie === specie && 'bg-blue-500'}`}
                 key={specie as string}
               >
                 {specie as string}
@@ -88,7 +88,7 @@ export default function Home() {
                     prev === status ? undefined : status,
                   )
                 }
-                className={`${filterStatus === status && '!bg-blue-500'}`}
+                className={`${filterStatus === status && 'bg-blue-500'}`}
                 key={status as string}
               >
                 {status as string}
@@ -104,7 +104,7 @@ export default function Home() {
                     prev === gender ? undefined : gender,
                   )
                 }
-                className={`${filterGender === gender && '!bg-blue-500'}`}
+                className={`${filterGender === gender && 'bg-blue-500'}`}
                 key={gender as string}
               >
                 {gender as string}
