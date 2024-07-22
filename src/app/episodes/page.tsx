@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import Services from '@/services';
 
-import type { IEpisodes } from '@/types/episode';
 import CharBadged from '@/components/CharBadged';
+import type { IEpisodes } from '@/types/episode';
 
 export default function Home() {
   const [episodes, setEpisodes] = useState<IEpisodes[]>();

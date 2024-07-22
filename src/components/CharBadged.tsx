@@ -1,7 +1,7 @@
 import getId from '@/lib/getId';
-import { useEffect, useState } from 'react';
-import type { ICharacter } from '@/types/character';
 import Services from '@/services';
+import type { ICharacter } from '@/types/character';
+import { useEffect, useState } from 'react';
 import { Badge } from './ui/badge';
 
 export default function CharBadged({ characterUrl }: { characterUrl: string }) {
