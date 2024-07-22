@@ -14,9 +14,6 @@ export default function Navbar() {
 
   const routes = Object.keys(ERoutes);
 
-  routes.forEach((key, index) => {
-    console.log(`${key} has index ${index}`);
-  });
   return (
     <div className="px-14 py-5 flex items-center justify-between bg-blue-700/5 rounded-b-md">
       <h1 className="text-black text-3xl font-semibold">Rick and Morty</h1>
