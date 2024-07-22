@@ -1,12 +1,12 @@
 'use client';
 
-import Services from '@/services';
-import { useEffect, useState } from 'react';
-import type { ICharacter } from '@/types/character';
-import { Card, CardContent } from '@/components/ui/card';
-import Image from 'next/image';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import Services from '@/services';
+import type { ICharacter } from '@/types/character';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [characters, setCharacters] = useState<ICharacter[]>();
