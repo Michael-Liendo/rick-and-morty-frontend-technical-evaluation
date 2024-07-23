@@ -11,6 +11,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import getRandomNumber from '@/lib/RandomNumbers';
 import Services from '@/services';
 import type { ICharacter } from '@/types/character';
@@ -142,7 +151,7 @@ export default function Home() {
       <div className="flex">
         <div
           title="sidebar"
-          className="w-1/5 sm:w-1/4 mr-10  pr-5 border-r min-h-screen"
+          className="min-w-5 max-w-xs mr-3 sm:mr-10 pr-2 sm:pr-5 border-r min-h-screen"
         >
           <div className="grid w-full max-w-sm items-center gap-1">
             <h1 className="text-xl sm:text-2xl mt-8">Search</h1>
@@ -215,7 +224,7 @@ export default function Home() {
               Create
             </Button>
           </div>
-          <div className="mt-6 grid grid-cols-4 gap-8">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {characters
               ?.filter(
                 ({ species, gender, status }) =>
@@ -252,6 +261,12 @@ export default function Home() {
                       </div>
                       <h2 title={character.origin.name} className=" truncate">
                         {character.origin.name}
+                      </h2>
+                      <h2
+                        title={character.origin.name}
+                        className={`${character.status === 'Alive' && 'text-green-600'} ${character.status === 'Dead' && 'text-red-600'} ${character.status === 'unknown' && 'text-slate-600'} font-semibold`}
+                      >
+                        {character.status}
                       </h2>
                     </CardContent>
                   </Card>
@@ -321,6 +336,31 @@ export default function Home() {
                       value={modalData.location.name}
                       required
                     />
+                  </div>
+                  <div className="flex flex-col space-y-1.5">
+                    <label htmlFor="name">Status</label>
+                    <Select
+                      onValueChange={(e) => {
+                        setModalData((prev) => {
+                          return { ...prev, status: e };
+                        });
+                      }}
+                      value={modalData.status}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Status</SelectLabel>
+                          {Array.from(statuses).map((val) => (
+                            <SelectItem key={val} value={val}>
+                              {val}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </form>
