@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -121,7 +120,7 @@ export default function Home() {
       <div className="flex">
         <div
           title="sidebar"
-          className="w-1/5 sm:w-1/4 mr-10 pr-5 border-r min-h-screen"
+          className="hidden sm:block w-1/5 sm:w-1/4 mr-10 pr-5 border-r min-h-screen"
         >
           <div className="grid w-full max-w-sm items-center gap-1">
             <h1 className="text-xl sm:text-2xl mt-8">Search</h1>
@@ -137,7 +136,16 @@ export default function Home() {
         </div>
 
         <div title="main" className="w-full">
-          <div className="mt-10 flex justify-end items-center">
+          <div className="mt-10 flex justify-between sm:justify-end items-center">
+            <div className="flex sm:hidden items-center">
+              <h1 className="text-xl sm:text-2xl mr-2">Search</h1>
+              <Input
+                type="search"
+                id="find"
+                placeholder="Morty"
+                onChange={(e) => setFilterName(e.target.value)}
+              />
+            </div>
             <Button
               onClick={handleOpenModalCreateEpisode}
               className="text-xl bg-blue-600 hover:bg-blue-600/90"
@@ -163,10 +171,12 @@ export default function Home() {
                 .map((episode, index) => (
                   <TableRow key={episode.id}>
                     <TableCell>{episode.episode}</TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="truncate font-medium">
                       {episode.name}
                     </TableCell>
-                    <TableCell>{episode.air_date}</TableCell>
+                    <TableCell className="truncate">
+                      {episode.air_date}
+                    </TableCell>
 
                     <TableCell>{episode.characters?.length}</TableCell>
                     <TableCell className="text-right">
