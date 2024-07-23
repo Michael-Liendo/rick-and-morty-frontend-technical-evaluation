@@ -1,6 +1,6 @@
 export interface IEpisodes {
   info: IInfo;
-  results: IEpisodes[];
+  results: IEpisode[];
 }
 
 export interface IInfo {
@@ -10,7 +10,7 @@ export interface IInfo {
   prev: string;
 }
 
-export interface IEpisodes {
+export interface IEpisode {
   id: number;
   name: string;
   air_date: string;

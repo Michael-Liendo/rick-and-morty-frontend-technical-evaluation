@@ -1,11 +1,11 @@
 'use client';
 
+import EditSvg from '@/components/EditSvg';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -50,7 +50,7 @@ export default function Home() {
   // Filter
   const [filterSpecie, setFilterSpecie] = useState<string>();
   const [filterStatus, setFilterStatus] = useState<string>();
-  const [filterName, setFilterName] = useState<string>();
+  const [_filterName, setFilterName] = useState<string>();
   const [filterGender, setFilterGender] = useState<string>();
 
   async function getAllCharacters() {
@@ -142,7 +142,7 @@ export default function Home() {
       <div className="flex">
         <div
           title="sidebar"
-          className="w-1/5 sm:w-1/4 mr-10 border-r min-h-screen"
+          className="w-1/5 sm:w-1/4 mr-10  pr-5 border-r min-h-screen"
         >
           <div className="grid w-full max-w-sm items-center gap-1">
             <h1 className="text-xl sm:text-2xl mt-8">Search</h1>
@@ -218,7 +218,7 @@ export default function Home() {
           <div className="mt-6 grid grid-cols-4 gap-8">
             {characters
               ?.filter(
-                ({ species, gender, status, name }) =>
+                ({ species, gender, status }) =>
                   (filterSpecie ? filterSpecie === species : true) &&
                   (filterStatus ? filterStatus === status : true) &&
                   (filterGender ? filterGender === gender : true),
@@ -246,21 +246,7 @@ export default function Home() {
                           onClick={() => handleOpenModalEditCharacter(index)}
                         >
                           <i className=" max-w-24">
-                            {/* biome-ignore lint/a11y/noSvgWithoutTitle: without title */}
-                            <svg
-                              fill="none"
-                              height="24"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              stroke-linejoin="round"
-                              strokeWidth="2"
-                              viewBox="0 0 24 24"
-                              width="24"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                            </svg>
+                            <EditSvg />
                           </i>
                         </button>
                       </div>
