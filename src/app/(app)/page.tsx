@@ -328,14 +328,14 @@ export default function Home() {
                         setModalData((prev) => {
                           return {
                             ...prev,
-                            location: {
+                            origin: {
                               ...prev.location,
                               name: e.target.value,
                             },
                           };
                         });
                       }}
-                      value={modalData.location.name}
+                      value={modalData.origin.name}
                       required
                     />
                   </div>
