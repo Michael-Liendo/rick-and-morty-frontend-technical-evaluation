@@ -49,7 +49,7 @@ export default function Home() {
 
   // Filter
 
-  const [_filterName, setFilterName] = useState<string>();
+  const [filterName, setFilterName] = useState<string>();
 
   async function getAllEpisodes() {
     const episodesRaw = localStorage.getItem('episodes');
@@ -167,7 +167,13 @@ export default function Home() {
             </TableHeader>
             <TableBody>
               {episodes
-                ?.filter(({ name }) => true)
+                ?.filter(({ name }) =>
+                  filterName
+                    ? name
+                        .toLocaleLowerCase()
+                        .includes(filterName.toLocaleLowerCase())
+                    : true,
+                )
                 .map((episode, index) => (
                   <TableRow key={episode.id}>
                     <TableCell>{episode.episode}</TableCell>
