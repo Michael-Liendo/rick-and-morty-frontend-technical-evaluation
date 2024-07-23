@@ -59,7 +59,7 @@ export default function Home() {
   // Filter
   const [filterSpecie, setFilterSpecie] = useState<string>();
   const [filterStatus, setFilterStatus] = useState<string>();
-  const [_filterName, setFilterName] = useState<string>();
+  const [filterName, setFilterName] = useState<string>();
   const [filterGender, setFilterGender] = useState<string>();
 
   async function getAllCharacters() {
@@ -224,24 +224,26 @@ export default function Home() {
               Create
             </Button>
           </div>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="my-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {characters
               ?.filter(
-                ({ species, gender, status }) =>
+                ({ species, gender, status, name }) =>
                   (filterSpecie ? filterSpecie === species : true) &&
                   (filterStatus ? filterStatus === status : true) &&
-                  (filterGender ? filterGender === gender : true),
-                /* (filterName
-                    ? filterName.toLowerCase().match(name.toLocaleLowerCase())
-                    : true) */
+                  (filterGender ? filterGender === gender : true) &&
+                  (filterName
+                    ? name
+                        .toLocaleLowerCase()
+                        .includes(filterName.toLocaleLowerCase())
+                    : true),
               )
               .map((character, index) => {
                 return (
-                  <Card key={character.id}>
+                  <Card className="max-w-96" key={character.id}>
                     <Image
                       src={character.image}
                       alt={`${character.name} photo`}
-                      className="rounded-t-lg w-full object-cover"
+                      className="rounded-t-lg w-full object-cover h-96"
                       width={500}
                       height={400}
                     />
