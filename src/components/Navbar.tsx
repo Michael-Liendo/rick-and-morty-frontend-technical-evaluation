@@ -22,9 +22,13 @@ export default function Navbar() {
           {routes.map((key) => (
             <li
               key={key}
-              className={`${pathname === ERoutes[key] && DEFAULT_LINK_CLASSES}`}
+              className={`${
+                // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+                pathname === (ERoutes as any)[key] && DEFAULT_LINK_CLASSES
+              }`}
             >
-              <Link href={ERoutes[key]}>{key}</Link>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+              <Link href={(ERoutes as any)[key]}>{key}</Link>
             </li>
           ))}
         </ul>
