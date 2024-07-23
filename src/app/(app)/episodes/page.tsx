@@ -23,10 +23,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/components/ui/use-toast';
 import getRandomNumber from '@/lib/RandomNumbers';
 import type { IEpisode } from '@/types/episode';
 
 export default function Home() {
+  const { toast } = useToast();
   const [episodes, setEpisodes] = useState<IEpisode[]>();
 
   const [isOpenActionModal, setIsOpenActionModal] = useState<{
@@ -46,7 +49,7 @@ export default function Home() {
       day: '2-digit',
       year: 'numeric',
     }),
-    episode: getRandomNumber(100, 1000).toString(),
+    episode: 'S7E9',
     id: getRandomNumber(100, 1000),
     url: '1',
   });
@@ -78,6 +81,12 @@ export default function Home() {
   }
 
   function handleSubmitModalAction() {
+    if (!modalData.name) {
+      toast({
+        title: 'Please add a name',
+      });
+      return;
+    }
     if (isOpenActionModal.isCreate) {
       setEpisodes((prev) => {
         const newArray = [...(prev ?? [])];
@@ -132,7 +141,7 @@ export default function Home() {
               <Input
                 type="search"
                 id="find"
-                placeholder="Morty"
+                placeholder="Episode or name"
                 onChange={(e) => setFilterName(e.target.value)}
               />
             </div>
@@ -146,7 +155,7 @@ export default function Home() {
               <Input
                 type="search"
                 id="find"
-                placeholder="Morty"
+                placeholder="Episode or Name"
                 onChange={(e) => setFilterName(e.target.value)}
               />
             </div>
@@ -171,12 +180,18 @@ export default function Home() {
             </TableHeader>
             <TableBody>
               {episodes
-                ?.filter(({ name }) =>
-                  filterName
-                    ? name
-                        .toLocaleLowerCase()
-                        .includes(filterName.toLocaleLowerCase())
-                    : true,
+                ?.filter(
+                  ({ name, episode }) =>
+                    (filterName
+                      ? name
+                          .toLocaleLowerCase()
+                          .includes(filterName.toLocaleLowerCase())
+                      : true) ||
+                    (filterName
+                      ? episode
+                          .toLocaleLowerCase()
+                          .includes(filterName.toLocaleLowerCase())
+                      : true),
                 )
                 .map((episode, index) => (
                   <TableRow key={episode.id}>
