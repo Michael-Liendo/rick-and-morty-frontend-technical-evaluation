@@ -1,9 +1,9 @@
 'use client';
 
+import { useAuth } from '@/store/user';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { useAuth } from '@/store/user';
 import {
   DropdownMenu,
   DropdownMenuContent,

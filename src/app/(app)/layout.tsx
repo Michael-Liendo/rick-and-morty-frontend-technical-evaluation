@@ -1,7 +1,7 @@
 'use client';
-import { redirect } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/store/user';
+import { redirect } from 'next/navigation';
 
 export default function AppLayout({
   children,

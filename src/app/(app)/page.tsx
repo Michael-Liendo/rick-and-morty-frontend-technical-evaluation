@@ -22,9 +22,9 @@ import {
 } from '@/components/ui/select';
 import getRandomNumber from '@/lib/RandomNumbers';
 import Services from '@/services';
+import type { ICharacter } from '@/types/character';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import type { ICharacter } from '@/types/character';
 
 export default function Home() {
   const [characters, setCharacters] = useState<ICharacter[]>();

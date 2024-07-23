@@ -12,7 +12,7 @@ export const useAuth = create(
     setUser: (user: IUser) => void;
     logOut: () => void;
   }>(
-    (set, get) => ({
+    (set, _get) => ({
       user: null,
       setUser: (user: IUser) => set({ user: user }),
       logOut: () => {
