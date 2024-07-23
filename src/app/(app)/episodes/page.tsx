@@ -132,7 +132,7 @@ export default function Home() {
               <Input
                 type="search"
                 id="find"
-                placeholder="Morty"
+                placeholder="Episode or name"
                 onChange={(e) => setFilterName(e.target.value)}
               />
             </div>
@@ -146,7 +146,7 @@ export default function Home() {
               <Input
                 type="search"
                 id="find"
-                placeholder="Morty"
+                placeholder="Episode or Name"
                 onChange={(e) => setFilterName(e.target.value)}
               />
             </div>
@@ -171,12 +171,18 @@ export default function Home() {
             </TableHeader>
             <TableBody>
               {episodes
-                ?.filter(({ name }) =>
-                  filterName
-                    ? name
-                        .toLocaleLowerCase()
-                        .includes(filterName.toLocaleLowerCase())
-                    : true,
+                ?.filter(
+                  ({ name, episode }) =>
+                    (filterName
+                      ? name
+                          .toLocaleLowerCase()
+                          .includes(filterName.toLocaleLowerCase())
+                      : true) ||
+                    (filterName
+                      ? episode
+                          .toLocaleLowerCase()
+                          .includes(filterName.toLocaleLowerCase())
+                      : true),
                 )
                 .map((episode, index) => (
                   <TableRow key={episode.id}>
