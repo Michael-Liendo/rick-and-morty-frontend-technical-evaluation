@@ -15,8 +15,11 @@ export default function Navbar() {
   const routes = Object.keys(ERoutes);
 
   return (
-    <div className="px-14 py-5 flex items-center justify-between bg-blue-700/5 rounded-b-md">
-      <h1 className="text-black text-3xl font-semibold">Rick and Morty</h1>
+    <div className="px-3 sm:px-14 py-5 flex items-center justify-between bg-blue-700/5 rounded-b-md">
+      <h1 className="text-black text-xl sm:text-3xl font-semibold">
+        <span className="text-sky-500"> Rick</span> and{' '}
+        <span className="text-yellow-300">Morty</span>
+      </h1>
       <nav>
         <ul className="flex items-center space-x-4">
           {routes.map((key) => (
