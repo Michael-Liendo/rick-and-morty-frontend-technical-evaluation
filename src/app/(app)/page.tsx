@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
 import getRandomNumber from '@/lib/RandomNumbers';
 import Services from '@/services';
 import type { ICharacter } from '@/types/character';
@@ -27,6 +28,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const { toast } = useToast();
   const [characters, setCharacters] = useState<ICharacter[]>();
 
   const [isOpenActionModal, setIsOpenActionModal] = useState<{
@@ -43,7 +45,7 @@ export default function Home() {
     episode: [getRandomNumber(0, 71).toString()],
     gender: 'Male',
     id: getRandomNumber(100, 1000),
-    image: '',
+    image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
     location: { name: 'Venezuela', url: '1' },
     origin: { name: 'Earth', url: '1' },
     species: 'Human',
@@ -103,6 +105,9 @@ export default function Home() {
   }
 
   function handleSubmitModalAction() {
+    if (!modalData.name) {
+      return toast({ title: 'All fields are required!' });
+    }
     if (isOpenActionModal.isCreate) {
       setCharacters((prev) => {
         const newArray = [...(prev ?? [])];

@@ -25,8 +25,11 @@ import {
 } from '@/components/ui/table';
 import getRandomNumber from '@/lib/RandomNumbers';
 import type { IEpisode } from '@/types/episode';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 export default function Home() {
+  const { toast } = useToast();
   const [episodes, setEpisodes] = useState<IEpisode[]>();
 
   const [isOpenActionModal, setIsOpenActionModal] = useState<{
@@ -46,7 +49,7 @@ export default function Home() {
       day: '2-digit',
       year: 'numeric',
     }),
-    episode: getRandomNumber(100, 1000).toString(),
+    episode: 'S7E9',
     id: getRandomNumber(100, 1000),
     url: '1',
   });
@@ -78,6 +81,12 @@ export default function Home() {
   }
 
   function handleSubmitModalAction() {
+    if (!modalData.name) {
+      toast({
+        title: 'Please add a name',
+      });
+      return;
+    }
     if (isOpenActionModal.isCreate) {
       setEpisodes((prev) => {
         const newArray = [...(prev ?? [])];
