@@ -162,7 +162,7 @@ export default function Home() {
                 ?.filter(({ name }) => true)
                 .map((episode, index) => (
                   <TableRow key={episode.id}>
-                    <TableCell>{episode.id}</TableCell>
+                    <TableCell>{episode.episode}</TableCell>
                     <TableCell className="font-medium">
                       {episode.name}
                     </TableCell>
