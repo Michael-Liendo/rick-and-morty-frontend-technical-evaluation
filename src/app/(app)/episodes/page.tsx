@@ -23,10 +23,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/components/ui/use-toast';
 import getRandomNumber from '@/lib/RandomNumbers';
 import type { IEpisode } from '@/types/episode';
-import { useToast } from '@/components/ui/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 
 export default function Home() {
   const { toast } = useToast();
