@@ -2,8 +2,16 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import getRandomNumber from '@/lib/RandomNumbers';
 import Services from '@/services';
 import type { ICharacter } from '@/types/character';
 import Image from 'next/image';
@@ -12,6 +20,29 @@ import { useEffect, useState } from 'react';
 export default function Home() {
   const [characters, setCharacters] = useState<ICharacter[]>();
 
+  const [isOpenActionModal, setIsOpenActionModal] = useState<{
+    isOpen: boolean;
+    isCreate: boolean;
+    index?: number;
+  }>({
+    isOpen: false,
+    isCreate: false,
+  });
+  const [modalData, setModalData] = useState<ICharacter>({
+    name: '',
+    created: new Date(),
+    episode: [getRandomNumber(0, 71).toString()],
+    gender: 'Male',
+    id: getRandomNumber(100, 1000),
+    image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
+    location: { name: 'Earth', url: '1' },
+    origin: { name: 'Earth', url: '1' },
+    species: 'Human',
+    status: 'Alive',
+    type: '',
+    url: '1',
+  });
+
   const [species, setSpecies] = useState<Set<string>>(new Set());
   const [statuses, setStatuses] = useState<Set<string>>(new Set());
   const [genders, setGenders] = useState<Set<string>>(new Set());
@@ -19,7 +50,7 @@ export default function Home() {
   // Filter
   const [filterSpecie, setFilterSpecie] = useState<string>();
   const [filterStatus, setFilterStatus] = useState<string>();
-  const [filterName, setFilterName] = useState<string>();
+  const [_filterName, setFilterName] = useState<string>();
   const [filterGender, setFilterGender] = useState<string>();
 
   async function getAllCharacters() {
@@ -52,7 +83,43 @@ export default function Home() {
     });
   }
 
-  function handleEditCharacter(index: number) {}
+  function handleOpenModalEditCharacter(index: number) {
+    if (!characters) return;
+    setModalData(characters?.at(index) ?? modalData);
+    setIsOpenActionModal({ isCreate: false, isOpen: true, index });
+  }
+
+  function handleSubmitModalAction() {
+    if (isOpenActionModal.isCreate) {
+    } else {
+      setCharacters((prev) => {
+        const newArray = [...(prev ?? [])];
+        newArray[isOpenActionModal?.index || 0] = modalData;
+
+        return newArray;
+      });
+    }
+
+    handleCloseModalAction();
+  }
+
+  function handleCloseModalAction() {
+    setIsOpenActionModal({ isCreate: false, isOpen: false, index: undefined });
+    setModalData({
+      name: '',
+      created: new Date(),
+      episode: [getRandomNumber(0, 71).toString()],
+      gender: 'Male',
+      id: getRandomNumber(100, 1000),
+      image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
+      location: { name: 'Earth', url: '0' },
+      origin: { name: 'Earth', url: '0' },
+      species: 'Human',
+      status: 'Alive',
+      type: '',
+      url: '1',
+    });
+  }
 
   useEffect(() => {
     getAllCharacters();
@@ -61,7 +128,7 @@ export default function Home() {
   return (
     <>
       <div className="flex ">
-        <div title="sidebar" className="w-1/5 sm:w-1/4 pt-24">
+        <div title="sidebar" className="w-1/5 sm:w-1/4 mr-10 pt-24 border-r">
           <h1 className="text-xl sm:text-2xl">Filters</h1>
           <p className="mt-3">Specie</p>
           <div className="space-x-3">
@@ -139,7 +206,7 @@ export default function Home() {
                   (filterStatus ? filterStatus === status : true) &&
                   (filterGender ? filterGender === gender : true),
               )
-              .map((character) => {
+              .map((character, index) => {
                 return (
                   <Card key={character.id}>
                     <Image
@@ -149,14 +216,40 @@ export default function Home() {
                       width={500}
                       height={400}
                     />
-                    <CardContent className="flex items-start justify-between mt-2">
-                      <h1 className="text-xl sm:text-2xl">{character.name}</h1>
-                      <small
+                    <CardContent>
+                      <div className="flex items-start justify-between mt-2">
+                        <h1 className="text-xl sm:text-2xl">
+                          {character.name}
+                        </h1>
+                        <button
+                          type="button"
+                          onClick={() => handleOpenModalEditCharacter(index)}
+                        >
+                          <i className="truncate max-w-24">
+                            {/* biome-ignore lint/a11y/noSvgWithoutTitle: without title */}
+                            <svg
+                              fill="none"
+                              height="24"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              stroke-linejoin="round"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                              width="24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                          </i>
+                        </button>
+                      </div>
+                      <h2
                         title={character.origin.name}
                         className="truncate max-w-24"
                       >
                         {character.origin.name}
-                      </small>
+                      </h2>
                     </CardContent>
                   </Card>
                 );
@@ -164,6 +257,82 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* ==== modal edit ==== */}
+      {isOpenActionModal.isOpen && (
+        <div className="fixed right-0 top-0 z-10 flex h-screen w-screen flex-col items-center justify-center drop-shadow-lg backdrop-blur-[2px] bg-[#00000055]">
+          <Card className="w-[350px]">
+            <CardHeader>
+              <CardTitle>
+                {isOpenActionModal.isCreate ? 'Create ' : 'Edit '}
+                character
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form>
+                <div className="grid w-full items-center gap-4">
+                  <div className="flex flex-col space-y-1.5">
+                    <label htmlFor="name">Image</label>
+                    <Input
+                      id="name"
+                      type="url"
+                      placeholder="https://example.com/frick.png"
+                      value={modalData.image}
+                      onChange={(e) => {
+                        setModalData((prev) => {
+                          return { ...prev, image: e.target.value };
+                        });
+                      }}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col space-y-1.5">
+                    <label htmlFor="name">Name</label>
+                    <Input
+                      id="name"
+                      placeholder="Rick"
+                      value={modalData.name}
+                      onChange={(e) => {
+                        setModalData((prev) => {
+                          return { ...prev, name: e.target.value };
+                        });
+                      }}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col space-y-1.5">
+                    <label htmlFor="name">Location</label>
+                    <Input
+                      id="name"
+                      placeholder="Rick"
+                      onChange={(e) => {
+                        setModalData((prev) => {
+                          return {
+                            ...prev,
+                            location: {
+                              ...prev.location,
+                              name: e.target.value,
+                            },
+                          };
+                        });
+                      }}
+                      value={modalData.location.name}
+                      required
+                    />
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="outline" onClick={handleCloseModalAction}>
+                Cancel
+              </Button>
+              <Button className="bg-blue-600" onClick={handleSubmitModalAction}>
+                {isOpenActionModal.isCreate ? 'Create' : 'Edit'}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      )}
     </>
   );
 }
