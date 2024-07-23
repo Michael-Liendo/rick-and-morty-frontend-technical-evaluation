@@ -34,8 +34,8 @@ export default function Home() {
     episode: [getRandomNumber(0, 71).toString()],
     gender: 'Male',
     id: getRandomNumber(100, 1000),
-    image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
-    location: { name: 'Earth', url: '1' },
+    image: '',
+    location: { name: 'Venezuela', url: '1' },
     origin: { name: 'Earth', url: '1' },
     species: 'Human',
     status: 'Alive',
@@ -50,7 +50,7 @@ export default function Home() {
   // Filter
   const [filterSpecie, setFilterSpecie] = useState<string>();
   const [filterStatus, setFilterStatus] = useState<string>();
-  const [_filterName, setFilterName] = useState<string>();
+  const [filterName, setFilterName] = useState<string>();
   const [filterGender, setFilterGender] = useState<string>();
 
   async function getAllCharacters() {
@@ -88,13 +88,25 @@ export default function Home() {
     setModalData(characters?.at(index) ?? modalData);
     setIsOpenActionModal({ isCreate: false, isOpen: true, index });
   }
+  function handleOpenModalCreateCharacter() {
+    if (!characters) return;
+    setIsOpenActionModal({ isCreate: true, isOpen: true });
+  }
 
   function handleSubmitModalAction() {
     if (isOpenActionModal.isCreate) {
+      setCharacters((prev) => {
+        const newArray = [...(prev ?? [])];
+        newArray.unshift(modalData);
+        localStorage.setItem('characters', JSON.stringify(newArray));
+
+        return newArray;
+      });
     } else {
       setCharacters((prev) => {
         const newArray = [...(prev ?? [])];
         newArray[isOpenActionModal?.index || 0] = modalData;
+        localStorage.setItem('characters', JSON.stringify(newArray));
 
         return newArray;
       });
@@ -112,8 +124,8 @@ export default function Home() {
       gender: 'Male',
       id: getRandomNumber(100, 1000),
       image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
-      location: { name: 'Earth', url: '0' },
-      origin: { name: 'Earth', url: '0' },
+      location: { name: '', url: '0' },
+      origin: { name: '', url: '0' },
       species: 'Human',
       status: 'Alive',
       type: '',
@@ -127,9 +139,23 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex ">
-        <div title="sidebar" className="w-1/5 sm:w-1/4 mr-10 pt-24 border-r">
-          <h1 className="text-xl sm:text-2xl">Filters</h1>
+      <div className="flex">
+        <div
+          title="sidebar"
+          className="w-1/5 sm:w-1/4 mr-10 border-r min-h-screen"
+        >
+          <div className="grid w-full max-w-sm items-center gap-1">
+            <h1 className="text-xl sm:text-2xl mt-8">Search</h1>
+            <div className="flex items-center">
+              <Input
+                type="search"
+                id="find"
+                placeholder="Morty"
+                onChange={(e) => setFilterName(e.target.value)}
+              />
+            </div>
+          </div>
+          <h1 className="text-xl sm:text-2xl mt-8">Filters</h1>
           <p className="mt-3">Specie</p>
           <div className="space-x-3">
             {Array.from(species).map((specie) => (
@@ -181,30 +207,24 @@ export default function Home() {
         </div>
 
         <div title="main">
-          <div className="flex justify-center items-center">
-            <div className="grid w-full max-w-sm items-center gap-1 mt-4">
-              <label htmlFor="find">Find Character</label>
-              <div className="flex items-center">
-                <Input
-                  type="search"
-                  id="find"
-                  placeholder="Morty"
-                  className="rounded-r-none"
-                  onChange={(e) => setFilterName(e.target.value)}
-                />
-                <Button className="rounded-l-none bg-blue-600 hover:bg-blue-600/90">
-                  Find
-                </Button>
-              </div>
-            </div>
+          <div className="mt-10 flex justify-end items-center">
+            <Button
+              onClick={handleOpenModalCreateCharacter}
+              className="text-xl bg-blue-600 hover:bg-blue-600/90"
+            >
+              Create
+            </Button>
           </div>
           <div className="mt-6 grid grid-cols-4 gap-8">
             {characters
               ?.filter(
-                ({ species, gender, status }) =>
+                ({ species, gender, status, name }) =>
                   (filterSpecie ? filterSpecie === species : true) &&
                   (filterStatus ? filterStatus === status : true) &&
                   (filterGender ? filterGender === gender : true),
+                /* (filterName
+                    ? filterName.toLowerCase().match(name.toLocaleLowerCase())
+                    : true) */
               )
               .map((character, index) => {
                 return (
@@ -225,7 +245,7 @@ export default function Home() {
                           type="button"
                           onClick={() => handleOpenModalEditCharacter(index)}
                         >
-                          <i className="truncate max-w-24">
+                          <i className=" max-w-24">
                             {/* biome-ignore lint/a11y/noSvgWithoutTitle: without title */}
                             <svg
                               fill="none"
@@ -244,10 +264,7 @@ export default function Home() {
                           </i>
                         </button>
                       </div>
-                      <h2
-                        title={character.origin.name}
-                        className="truncate max-w-24"
-                      >
+                      <h2 title={character.origin.name} className=" truncate">
                         {character.origin.name}
                       </h2>
                     </CardContent>
@@ -275,7 +292,7 @@ export default function Home() {
                     <Input
                       id="name"
                       type="url"
-                      placeholder="https://example.com/frick.png"
+                      placeholder="https://rickandmortyapi.com/api/character/avatar/19.jpeg"
                       value={modalData.image}
                       onChange={(e) => {
                         setModalData((prev) => {
@@ -302,8 +319,8 @@ export default function Home() {
                   <div className="flex flex-col space-y-1.5">
                     <label htmlFor="name">Location</label>
                     <Input
-                      id="name"
-                      placeholder="Rick"
+                      id="locations"
+                      placeholder="Venezuela"
                       onChange={(e) => {
                         setModalData((prev) => {
                           return {
