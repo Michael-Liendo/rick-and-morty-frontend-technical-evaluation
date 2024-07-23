@@ -13,6 +13,12 @@ export class Characters {
     }
   }
 
+  static async create(data: ICharacter) {
+    const prevCharacter = JSON.parse(
+      localStorage.getItem('Characters') ?? '[]',
+    );
+  }
+
   static async get(id: string) {
     try {
       const request = await fetch(`/character/${id}`);
