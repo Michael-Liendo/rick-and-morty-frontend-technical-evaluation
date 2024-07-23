@@ -50,7 +50,7 @@ export default function Home() {
   // Filter
   const [filterSpecie, setFilterSpecie] = useState<string>();
   const [filterStatus, setFilterStatus] = useState<string>();
-  const [filterName, setFilterName] = useState<string>();
+  const [_filterName, setFilterName] = useState<string>();
   const [filterGender, setFilterGender] = useState<string>();
 
   async function getAllCharacters() {

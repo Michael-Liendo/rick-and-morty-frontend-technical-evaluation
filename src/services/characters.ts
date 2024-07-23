@@ -13,8 +13,8 @@ export class Characters {
     }
   }
 
-  static async create(data: ICharacter) {
-    const prevCharacter = JSON.parse(
+  static async create(_data: ICharacter) {
+    const _prevCharacter = JSON.parse(
       localStorage.getItem('Characters') ?? '[]',
     );
   }
