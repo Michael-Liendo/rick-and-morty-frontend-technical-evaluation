@@ -224,7 +224,7 @@ export default function Home() {
               Create
             </Button>
           </div>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="my-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {characters
               ?.filter(
                 ({ species, gender, status, name }) =>
@@ -239,11 +239,11 @@ export default function Home() {
               )
               .map((character, index) => {
                 return (
-                  <Card key={character.id}>
+                  <Card className="max-w-96" key={character.id}>
                     <Image
                       src={character.image}
                       alt={`${character.name} photo`}
-                      className="rounded-t-lg w-full object-cover"
+                      className="rounded-t-lg w-full object-cover h-96"
                       width={500}
                       height={400}
                     />
