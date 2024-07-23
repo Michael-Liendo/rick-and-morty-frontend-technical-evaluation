@@ -41,8 +41,12 @@ export default function Home() {
     name: '',
     created: '',
     characters: [],
-    air_date: '',
-    episode: '',
+    air_date: new Date().toLocaleDateString('es', {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+    }),
+    episode: getRandomNumber(100, 1000).toString(),
     id: getRandomNumber(100, 1000),
     url: '1',
   });
@@ -218,24 +222,22 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form>
-                <div className="grid w-full items-center gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <label htmlFor="name">Name</label>
-                    <Input
-                      id="name"
-                      placeholder="Rick"
-                      value={modalData.name}
-                      onChange={(e) => {
-                        setModalData((prev) => {
-                          return { ...prev, name: e.target.value };
-                        });
-                      }}
-                      required
-                    />
-                  </div>
+              <div className="grid w-full items-center gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <label htmlFor="name">Name</label>
+                  <Input
+                    id="name"
+                    placeholder="Rick"
+                    value={modalData.name}
+                    onChange={(e) => {
+                      setModalData((prev) => {
+                        return { ...prev, name: e.target.value };
+                      });
+                    }}
+                    required
+                  />
                 </div>
-              </form>
+              </div>
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button variant="outline" onClick={handleCloseModalAction}>
