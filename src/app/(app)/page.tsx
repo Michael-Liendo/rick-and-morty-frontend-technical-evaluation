@@ -59,7 +59,7 @@ export default function Home() {
   // Filter
   const [filterSpecie, setFilterSpecie] = useState<string>();
   const [filterStatus, setFilterStatus] = useState<string>();
-  const [_filterName, setFilterName] = useState<string>();
+  const [filterName, setFilterName] = useState<string>();
   const [filterGender, setFilterGender] = useState<string>();
 
   async function getAllCharacters() {
@@ -227,13 +227,15 @@ export default function Home() {
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {characters
               ?.filter(
-                ({ species, gender, status }) =>
+                ({ species, gender, status, name }) =>
                   (filterSpecie ? filterSpecie === species : true) &&
                   (filterStatus ? filterStatus === status : true) &&
-                  (filterGender ? filterGender === gender : true),
-                /* (filterName
-                    ? filterName.toLowerCase().match(name.toLocaleLowerCase())
-                    : true) */
+                  (filterGender ? filterGender === gender : true) &&
+                  (filterName
+                    ? name
+                        .toLocaleLowerCase()
+                        .includes(filterName.toLocaleLowerCase())
+                    : true),
               )
               .map((character, index) => {
                 return (
