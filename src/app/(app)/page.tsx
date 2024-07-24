@@ -2,6 +2,7 @@
 
 import EditSvg from '@/components/EditSvg';
 import Modal from '@/components/Modal';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,6 +22,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 import getRandomNumber from '@/lib/RandomNumbers';
 import Services from '@/services';
@@ -216,7 +227,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div title="main">
+        <div title="main" className="w-full">
           <div className="mt-10 flex justify-end items-center">
             <Button
               onClick={handleOpenModalCreateCharacter}
@@ -225,57 +236,75 @@ export default function Home() {
               Create
             </Button>
           </div>
-          <div className="my-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {characters
-              ?.filter(
-                ({ species, gender, status, name }) =>
-                  (filterSpecie ? filterSpecie === species : true) &&
-                  (filterStatus ? filterStatus === status : true) &&
-                  (filterGender ? filterGender === gender : true) &&
-                  (filterName
-                    ? name
-                        .toLocaleLowerCase()
-                        .includes(filterName.toLocaleLowerCase())
-                    : true),
-              )
-              .map((character, index) => {
-                return (
-                  <Card className="max-w-96" key={character.id}>
-                    <img
-                      src={character.image}
-                      alt={character.name}
-                      className="rounded-t-lg w-full object-cover h-96"
-                      width={500}
-                      height={400}
-                    />
-                    <CardContent>
-                      <div className="flex items-start justify-between mt-2">
-                        <h1 className="text-xl sm:text-2xl">
-                          {character.name}
-                        </h1>
-                        <button
-                          type="button"
-                          onClick={() => handleOpenModalEditCharacter(index)}
-                        >
-                          <i className=" max-w-24">
-                            <EditSvg />
-                          </i>
-                        </button>
-                      </div>
-                      <h2 title={character.origin.name} className=" truncate">
-                        {character.origin.name}
-                      </h2>
-                      <h2
-                        title={character.origin.name}
-                        className={`${character.status === 'Alive' && 'text-green-600'} ${character.status === 'Dead' && 'text-red-600'} ${character.status === 'unknown' && 'text-slate-600'} font-semibold`}
+          <Table className="mt-10 w-full">
+            <TableCaption>Table of Episodes</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Avatar</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Specie</TableHead>
+                <TableHead>Appear Count</TableHead>
+                <TableHead className="text-right">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {characters
+                ?.filter(
+                  ({ species, gender, status, name }) =>
+                    (filterSpecie ? filterSpecie === species : true) &&
+                    (filterStatus ? filterStatus === status : true) &&
+                    (filterGender ? filterGender === gender : true) &&
+                    (filterName
+                      ? name
+                          .toLocaleLowerCase()
+                          .includes(filterName.toLocaleLowerCase())
+                      : true),
+                )
+                .map((character, index) => (
+                  <TableRow key={character.id}>
+                    <TableCell>
+                      <Avatar>
+                        <AvatarImage src={character.image} />
+                      </Avatar>
+                    </TableCell>
+                    <TableCell className="truncate font-medium">
+                      {character.name}
+                    </TableCell>
+                    <TableCell className="truncate">
+                      {character.location.name}
+                    </TableCell>
+                    <TableCell className="truncate">
+                      {character.status}
+                    </TableCell>
+                    <TableCell className="truncate">
+                      {character.species}
+                    </TableCell>
+
+                    <TableCell>{character.episode?.length}</TableCell>
+                    <TableCell className="text-right">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenModalEditCharacter(index)}
                       >
-                        {character.status}
-                      </h2>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-          </div>
+                        <i className="max-w-24">
+                          <EditSvg />
+                        </i>
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={6}>Total</TableCell>
+                <TableCell className="text-right">
+                  {characters?.length}
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
         </div>
       </div>
       {/* ==== modal edit ==== */}

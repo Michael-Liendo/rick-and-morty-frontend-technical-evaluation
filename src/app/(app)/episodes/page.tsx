@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
+import EditSvg from '@/components/EditSvg';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -9,10 +12,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import Services from '@/services';
-import { useEffect, useState } from 'react';
-
-import EditSvg from '@/components/EditSvg';
 import {
   Table,
   TableBody,
@@ -23,9 +22,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
 import getRandomNumber from '@/lib/RandomNumbers';
+import Services from '@/services';
+
 import type { IEpisode } from '@/types/episode';
 
 export default function Home() {
