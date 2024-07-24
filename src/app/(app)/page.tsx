@@ -1,6 +1,7 @@
 'use client';
 
 import EditSvg from '@/components/EditSvg';
+import Modal from '@/components/Modal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +25,6 @@ import { useToast } from '@/components/ui/use-toast';
 import getRandomNumber from '@/lib/RandomNumbers';
 import Services from '@/services';
 import type { ICharacter } from '@/types/character';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -79,16 +79,12 @@ export default function Home() {
   }
 
   function handleSetFilters(characters: ICharacter[] | undefined) {
-    // biome-ignore lint/complexity/noForEach: <explanation>
     characters?.forEach((character) => {
       setSpecies((prev) => prev.add(character.species));
     });
-
-    // biome-ignore lint/complexity/noForEach: <explanation>
     characters?.forEach((character) => {
       setStatuses((prev) => prev.add(character.status));
     });
-    // biome-ignore lint/complexity/noForEach: <explanation>
     characters?.forEach((character) => {
       setGenders((prev) => prev.add(character.gender));
     });
@@ -245,9 +241,9 @@ export default function Home() {
               .map((character, index) => {
                 return (
                   <Card className="max-w-96" key={character.id}>
-                    <Image
+                    <img
                       src={character.image}
-                      alt={`${character.name} photo`}
+                      alt={character.name}
                       className="rounded-t-lg w-full object-cover h-96"
                       width={500}
                       height={400}
@@ -283,106 +279,102 @@ export default function Home() {
         </div>
       </div>
       {/* ==== modal edit ==== */}
-      {isOpenActionModal.isOpen && (
-        <div className="fixed right-0 top-0 z-10 flex h-screen w-screen flex-col items-center justify-center drop-shadow-lg backdrop-blur-[2px] bg-[#00000055]">
-          <Card className="w-[350px]">
-            <CardHeader>
-              <CardTitle>
-                {isOpenActionModal.isCreate ? 'Create ' : 'Edit '}
-                character
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form>
-                <div className="grid w-full items-center gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <label htmlFor="name">Image</label>
-                    <Input
-                      id="name"
-                      type="url"
-                      placeholder="https://rickandmortyapi.com/api/character/avatar/19.jpeg"
-                      value={modalData.image}
-                      onChange={(e) => {
-                        setModalData((prev) => {
-                          return { ...prev, image: e.target.value };
-                        });
-                      }}
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <label htmlFor="name">Name</label>
-                    <Input
-                      id="name"
-                      placeholder="Rick"
-                      value={modalData.name}
-                      onChange={(e) => {
-                        setModalData((prev) => {
-                          return { ...prev, name: e.target.value };
-                        });
-                      }}
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <label htmlFor="name">Location</label>
-                    <Input
-                      id="locations"
-                      placeholder="Venezuela"
-                      onChange={(e) => {
-                        setModalData((prev) => {
-                          return {
-                            ...prev,
-                            origin: {
-                              ...prev.location,
-                              name: e.target.value,
-                            },
-                          };
-                        });
-                      }}
-                      value={modalData.origin.name}
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <label htmlFor="name">Status</label>
-                    <Select
-                      onValueChange={(e) => {
-                        setModalData((prev) => {
-                          return { ...prev, status: e };
-                        });
-                      }}
-                      value={modalData.status}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Status</SelectLabel>
-                          {Array.from(statuses).map((val) => (
-                            <SelectItem key={val} value={val}>
-                              {val}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </form>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline" onClick={handleCloseModalAction}>
-                Cancel
-              </Button>
-              <Button className="bg-blue-600" onClick={handleSubmitModalAction}>
-                {isOpenActionModal.isCreate ? 'Create' : 'Edit'}
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-      )}
+      <Modal isOpenActionModal={isOpenActionModal.isOpen}>
+        <CardHeader>
+          <CardTitle>
+            {isOpenActionModal.isCreate ? 'Create ' : 'Edit '}
+            character
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <label htmlFor="name">Image</label>
+                <Input
+                  id="name"
+                  type="url"
+                  placeholder="https://rickandmortyapi.com/api/character/avatar/19.jpeg"
+                  value={modalData.image}
+                  onChange={(e) => {
+                    setModalData((prev) => {
+                      return { ...prev, image: e.target.value };
+                    });
+                  }}
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <label htmlFor="name">Name</label>
+                <Input
+                  id="name"
+                  placeholder="Rick"
+                  value={modalData.name}
+                  onChange={(e) => {
+                    setModalData((prev) => {
+                      return { ...prev, name: e.target.value };
+                    });
+                  }}
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <label htmlFor="name">Location</label>
+                <Input
+                  id="locations"
+                  placeholder="Venezuela"
+                  onChange={(e) => {
+                    setModalData((prev) => {
+                      return {
+                        ...prev,
+                        origin: {
+                          ...prev.location,
+                          name: e.target.value,
+                        },
+                      };
+                    });
+                  }}
+                  value={modalData.origin.name}
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <label htmlFor="name">Status</label>
+                <Select
+                  onValueChange={(e) => {
+                    setModalData((prev) => {
+                      return { ...prev, status: e };
+                    });
+                  }}
+                  value={modalData.status}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Status</SelectLabel>
+                      {Array.from(statuses).map((val) => (
+                        <SelectItem key={val} value={val}>
+                          {val}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-row-reverse justify-between">
+          <Button className="bg-blue-600" onClick={handleSubmitModalAction}>
+            {isOpenActionModal.isCreate ? 'Create' : 'Edit'}
+          </Button>
+          <Button variant="outline" onClick={handleCloseModalAction}>
+            Cancel
+          </Button>
+        </CardFooter>
+      </Modal>
     </>
   );
 }

@@ -31,7 +31,7 @@ export default function Navbar() {
         href={ERoutes.Characters}
         className="text-black text-xl sm:text-3xl font-semibold"
       >
-        <span className="text-sky-500"> Rick</span> and{' '}
+        <span className="text-sky-500">Rick</span> and{' '}
         <span className="text-yellow-300">Morty</span>
       </Link>
       <div className="flex items-center space-x-5">
@@ -41,12 +41,10 @@ export default function Navbar() {
               <li
                 key={key}
                 className={`${
-                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-                  pathname === (ERoutes as any)[key] && DEFAULT_LINK_CLASSES
+                  pathname === ERoutes[key] && DEFAULT_LINK_CLASSES
                 }`}
               >
-                {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-                <Link href={(ERoutes as any)[key]}>{key}</Link>
+                <Link href={ERoutes[key]}>{key}</Link>
               </li>
             ))}
           </ul>
