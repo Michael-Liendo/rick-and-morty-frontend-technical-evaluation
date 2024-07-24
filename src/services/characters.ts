@@ -1,5 +1,6 @@
 import fetch from '@/lib/fetch';
-import type { ICharacter, ICharacters } from '@/types/character';
+import type { IResponse } from '@/types';
+import type { ICharacter } from '@/types/character';
 
 export class Characters {
   static async getAll() {
@@ -7,7 +8,7 @@ export class Characters {
       const request = await fetch('/character');
       const response = await request.json();
 
-      return response as ICharacters;
+      return response as IResponse<ICharacter>;
     } catch (e) {
       console.error('Services error: ', e);
     }

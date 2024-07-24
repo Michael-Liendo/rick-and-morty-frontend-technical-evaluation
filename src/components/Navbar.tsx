@@ -31,7 +31,7 @@ export default function Navbar() {
         href={ERoutes.Characters}
         className="text-black text-xl sm:text-3xl font-semibold"
       >
-        <span className="text-sky-500"> Rick</span> and{' '}
+        <span className="text-sky-500">Rick</span> and{' '}
         <span className="text-yellow-300">Morty</span>
       </Link>
       <div className="flex items-center space-x-5">
