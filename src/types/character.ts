@@ -1,15 +1,3 @@
-export interface ICharacters {
-  info: IInfo;
-  results: ICharacter[];
-}
-
-export interface IInfo {
-  count: number;
-  pages: number;
-  next: string;
-  prev: null;
-}
-
 export interface ICharacter {
   id: number;
   name: string;
