@@ -179,51 +179,69 @@ export default function Home() {
           <h1 className="text-xl sm:text-2xl mt-8">Filters</h1>
           <p className="mt-3">Specie</p>
           <div className="space-x-3">
-            {Array.from(species).map((specie) => (
-              <Badge
-                onClick={() =>
-                  setFilterSpecie((prev) =>
-                    prev === specie ? undefined : specie,
-                  )
-                }
-                className={`${filterSpecie === specie && 'bg-blue-500'}`}
-                key={specie as string}
-              >
-                {specie as string}
-              </Badge>
-            ))}
+            <Select
+              onValueChange={(e) => {
+                setFilterSpecie(e === 'undefined' ? undefined : e);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value={'undefined'}>N/A</SelectItem>
+                  {Array.from(species).map((specie) => (
+                    <SelectItem key={specie} value={specie}>
+                      {specie}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <p className="mt-3">Status</p>
           <div className="space-x-3">
-            {Array.from(statuses).map((status) => (
-              <Badge
-                onClick={() =>
-                  setFilterStatus((prev) =>
-                    prev === status ? undefined : status,
-                  )
-                }
-                className={`${filterStatus === status && 'bg-blue-500'}`}
-                key={status as string}
-              >
-                {status as string}
-              </Badge>
-            ))}
+            <Select
+              onValueChange={(e) => {
+                setFilterStatus(e === 'undefined' ? undefined : e);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value={'undefined'}>N/A</SelectItem>
+                  {Array.from(statuses).map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <p className="mt-3">Gender</p>
           <div className="space-x-3">
-            {Array.from(genders).map((gender) => (
-              <Badge
-                onClick={() =>
-                  setFilterGender((prev) =>
-                    prev === gender ? undefined : gender,
-                  )
-                }
-                className={`${filterGender === gender && 'bg-blue-500'}`}
-                key={gender as string}
-              >
-                {gender as string}
-              </Badge>
-            ))}
+            <Select
+              onValueChange={(e) => {
+                setFilterGender(e === 'undefined' ? undefined : e);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value={'undefined'}>N/A</SelectItem>
+                  {Array.from(genders).map((gender) => (
+                    <SelectItem key={gender} value={gender}>
+                      {gender}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -266,14 +284,17 @@ export default function Home() {
                   <TableRow key={character.id}>
                     <TableCell>
                       <Avatar>
-                        <AvatarImage src={character.image} />
+                        <AvatarImage
+                          className="object-cover"
+                          src={character.image}
+                        />
                       </Avatar>
                     </TableCell>
                     <TableCell className="truncate font-medium">
                       {character.name}
                     </TableCell>
                     <TableCell className="truncate">
-                      {character.location.name}
+                      {character.origin.name}
                     </TableCell>
                     <TableCell className="truncate">
                       {character.status}
