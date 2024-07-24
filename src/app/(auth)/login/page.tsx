@@ -34,7 +34,8 @@ export default function Login() {
             <CardHeader>
               <CardTitle>Login</CardTitle>
               <CardDescription>
-                Log In into you account to view the Rick and Morty Data
+                use any user and password, data is stored in the localstorage
+                for login
               </CardDescription>
             </CardHeader>
             <CardContent>
